@@ -405,6 +405,33 @@
   }
   footer .arabic { font-size: 1.4rem; margin-bottom: 8px; direction: rtl; }
 
+  .question {
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--gold-soft);
+    margin: 0 0 4px;
+  }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+  }
+  .video-card {
+    margin: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: #000;
+    aspect-ratio: 9 / 16;
+  }
+  .video-card video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   /* Reveal on scroll */
   .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.9s ease, transform 0.9s ease; }
   .reveal.in { opacity: 1; transform: none; }
@@ -456,7 +483,7 @@
       </svg>
 
       <p class="arabic" lang="ar">بَارَكَ اللهُ فِيكِ</p>
-      <p class="kicker">Happy 23rd Birthday</p>
+      <p class="kicker">Assalamu alaikum · Happy 23rd Birthday</p>
       <h1 id="name">Zikra</h1>
       <p class="sub">A small night sky made just for you. Keep scrolling for letters, a few games, and a couple of surprises.</p>
 
@@ -524,6 +551,7 @@
       <div class="card game reveal">
         <h3>3. One very important question</h3>
         <p class="hint">Answer carefully. The "No" button is a little shy.</p>
+        <p class="question">Will you let Yasir make this birthday unforgettable?</p>
         <div class="arena" id="arena">
           <button class="btn yes-btn" id="yes-btn" type="button">Yes</button>
           <button class="no-btn" id="no-btn" type="button">No</button>
@@ -552,6 +580,13 @@
       <button type="button" data-src="photos/4.jpg"><img src="photos/4.jpg" alt="Photo 4" loading="lazy"></button>
       <button type="button" data-src="photos/5.jpg"><img src="photos/5.jpg" alt="Photo 5" loading="lazy"></button>
     </div>
+  </section>
+
+  <!-- ============ VIDEOS ============ -->
+  <section class="section" id="moments">
+    <p class="eyebrow">Moments in motion</p>
+    <h2>Little clips, big smiles</h2>
+    <div class="video-grid" id="video-grid"></div>
   </section>
 
   <!-- ============ FINALE ============ -->
@@ -590,7 +625,7 @@
     letter: [
       "Zikra, I didn't want to send you just a message today. I wanted to build you a little night sky, the way you deserve to be celebrated: quietly, beautifully, and with a bit of mischief.",
       "They say the crescent moon is noticed most when it's small and new. Maybe that's why it reminds me of you. Not loud, not trying too hard, but impossible to ignore once you start looking.",
-      "Twenty-three looks good on you. Your kindness, your faith, the way you make ordinary moments feel warm. I'm grateful for all of it, and I hope this year brings you more peace than you can carry and more reasons to smile than you can count.",
+      "Twenty-three looks beautiful on you. I hope this year brings you more peace than you can carry and more reasons to smile than you can count, and that every good thing you have been quietly hoping for finds its way to you.",
       "I'll be honest, I've thought a lot about how to say this properly. So here it is, simply: I think you're extraordinary, and I'd love the chance to get to know you better, the right way, with respect and sincerity.",
       "Happy birthday, Zikra. May Allah bless your years and keep you under His light."
     ],
@@ -612,6 +647,10 @@
       "May your twenty-third year be your gentlest and brightest one yet.",
       "May your duas be answered in the way that is best for you."
     ],
+
+    // Clips for "Moments in motion", e.g. ["videos/1.mp4"]. Left empty until the
+    // clips are confirmed as Zikra. The section is hidden while this is empty.
+    videos: [],
 
     catchTarget: 10,
     catchReward: "10 crescents caught! Secret unlocked: this whole page was made just for you. 🌙",
@@ -656,6 +695,27 @@
       q.className = "wish reveal";
       q.textContent = t;
       grid.appendChild(q);
+    });
+  })();
+
+  /* ---------- Video clips ---------- */
+  (function buildVideos() {
+    if (!CONFIG.videos.length) {
+      $("moments").hidden = true;
+      return;
+    }
+    const grid = $("video-grid");
+    CONFIG.videos.forEach((src, i) => {
+      const fig = document.createElement("figure");
+      fig.className = "video-card reveal";
+      const v = document.createElement("video");
+      v.src = src;
+      v.controls = true;
+      v.playsInline = true;
+      v.preload = "metadata";
+      v.setAttribute("aria-label", "Clip " + (i + 1));
+      fig.appendChild(v);
+      grid.appendChild(fig);
     });
   })();
 
